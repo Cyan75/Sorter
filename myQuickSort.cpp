@@ -103,7 +103,7 @@ public:
         */
         return *(candidates.begin() + ranNumGen());
     }
-    void sort(void)
+    void partition(void)
     {
         std::vector<short>::iterator iP = vec.begin() + getPivotIndex();
         std::vector<short> vecL(vec.begin(), iP - 1);
@@ -136,5 +136,9 @@ public:
         /* how to determine if the sort is finished? 
         : the size of the all the remant vector is one
         */
+    }
+    void sort(void)
+    {
+        partition();
     }
 };
