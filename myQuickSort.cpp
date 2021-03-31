@@ -7,6 +7,7 @@
 #include <random>
 #include <iterator>
 #include <algorithm>
+typedef bool left;
 /*
     MODULISATION PLAN
     √• reader(constructor) : reads vector of shorts
@@ -19,6 +20,7 @@
 
     ¡¡¡¡¡¡ As the base class has the most generic form of the hierarchy, it has to available for any vector of any type!!!!!!
 */
+
 class QuickSortAlgorithm
 {
 private:
@@ -28,8 +30,8 @@ private:
     if so, I need to initialise in the constructor 
     */
     std::vector<short>::iterator itP;
-    short sizeOfVec;
-    short pivotCandNum;
+    unsigned short sizeOfVec;
+    unsigned short pivotCandNum;
 
 public:
     QuickSortAlgorithm(std::string fileName)
@@ -103,7 +105,7 @@ public:
         */
         return *(candidates.begin() + ranNumGen());
     }
-    std::vector<short> partition(std::vector<short> vec, bool returnLeft)
+    std::vector<short> partition(std::vector<short> vec, left isLeft)
     {
         //returnLeft: flag to choose vecL
         std::vector<short>::iterator iP = vec.begin() + getPivotIndex();
@@ -113,40 +115,41 @@ public:
         std::vector<short>::iterator iR = vecR.begin();
 
         std::vector<short> *leftBuffer = new std::vector<short>;
+
         /* 
         collecting 'larger' elements to the buffer 
         */
-        for (std::vector<short>::iterator iL = vecL.begin(); iL != vecL.end(); ++iL)
-        {
-            if (!letItBe(*iL, *iP))
+            for (std::vector<short>::iterator iL = vecL.begin(); iL != vecL.end(); ++iL)
             {
-                leftBuffer->push_back(*iL);
-                vecL.erase(iL);
+                if (!letItBe(*iL, *iP))
+                {
+                    leftBuffer->push_back(*iL);
+                    vecL.erase(iL);
+                }
             }
-        }
-        /*
+            /*
         collect smaller to the LEFT
         concaternate the buffer to the RIGHT
         */
-        for (std::vector<short>::iterator iR = vecL.begin(); iR != vecL.end(); ++iR)
-        {
-            if (!letItBe(*iP, *iR))
+            for (std::vector<short>::iterator iR = vecL.begin(); iR != vecL.end(); ++iR)
             {
-                vecL.push_back(*iR);
-                vecR.erase(iR);
-                vecR.insert(vecR.end(), leftBuffer->begin(), leftBuffer->end());
+                if (!letItBe(*iP, *iR))
+                {
+                    vecL.push_back(*iR);
+                    vecR.erase(iR);
+                    vecR.insert(vecR.end(), leftBuffer->begin(), leftBuffer->end());
+                }
             }
-        }
-        delete leftBuffer;
-        if (returnLeft == true)
-        {
-            return vecL;
-        }
-        else
-        {
-            return vecR;
-        }
-
+            delete leftBuffer;
+            if (isLeft == true)
+            {
+                partition(vecL, true);
+            }
+            else
+            {
+                partition(vecR, false);
+            }
+        
         /* 
         how to determine if the sort is finished? 
         : the size of the all the remant vector is one
@@ -155,13 +158,10 @@ public:
     void sort(void)
     {
         ///define true == left??
-        partition(this->vec, true);//left
-        partition(this->vec, false);//right
         do
         {
-            /* code */
-        } while (anyVec.size()==1);
-        
-
+            /* ¡¡¡¡¡¡ Can't initiate with the flag bool left!!!!*/
+            partition(this->vec,????????)
+        } while (false /* ! anyVec.size()==1 */);
     }
 };
