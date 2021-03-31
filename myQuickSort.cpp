@@ -103,16 +103,19 @@ public:
         */
         return *(candidates.begin() + ranNumGen());
     }
-    void partition(void)
+    std::vector<short> partition(std::vector<short> vec, bool returnLeft)
     {
+        //returnLeft: flag to choose vecL
         std::vector<short>::iterator iP = vec.begin() + getPivotIndex();
         std::vector<short> vecL(vec.begin(), iP - 1);
         std::vector<short>::iterator iL = vecL.begin();
         std::vector<short> vecR(iP + 1, vec.end() - 1);
         std::vector<short>::iterator iR = vecR.begin();
-//---------PROPAGATING ITERATION UNIT---------------------------------------------------------------------------------------
-        std::vector<short> *leftBuffer = new std::vector<short>;
 
+        std::vector<short> *leftBuffer = new std::vector<short>;
+        /* 
+        collecting 'larger' elements to the buffer 
+        */
         for (std::vector<short>::iterator iL = vecL.begin(); iL != vecL.end(); ++iL)
         {
             if (!letItBe(*iL, *iP))
@@ -121,7 +124,10 @@ public:
                 vecL.erase(iL);
             }
         }
-
+        /*
+        collect smaller to the LEFT
+        concaternate the buffer to the RIGHT
+        */
         for (std::vector<short>::iterator iR = vecL.begin(); iR != vecL.end(); ++iR)
         {
             if (!letItBe(*iP, *iR))
@@ -132,13 +138,30 @@ public:
             }
         }
         delete leftBuffer;
-//------------------------------------------------------------------------------------------------
-        /* how to determine if the sort is finished? 
+        if (returnLeft == true)
+        {
+            return vecL;
+        }
+        else
+        {
+            return vecR;
+        }
+
+        /* 
+        how to determine if the sort is finished? 
         : the size of the all the remant vector is one
         */
     }
     void sort(void)
     {
-        partition();
+        ///define true == left??
+        partition(this->vec, true);//left
+        partition(this->vec, false);//right
+        do
+        {
+            /* code */
+        } while (anyVec.size()==1);
+        
+
     }
 };
