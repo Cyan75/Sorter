@@ -22,17 +22,6 @@
 
 class QuickSortAlgorithm
 {
-private:
-    std::vector<short> vec;
-    std::vector<short> sorted;
-    /* 
-    do i need to declare the iterator for pivot here? 
-    if so, I need to initialise in the constructor 
-    */
-    std::vector<short>::iterator itP;
-    unsigned short sizeOfVec;
-    unsigned short pivotCandNum;
-
 public:
     QuickSortAlgorithm(std::string fileName)
     {
@@ -49,10 +38,11 @@ public:
                 sizeOfVec++;
             }
             unsorted.close();
+            //sizeOfVec is the number of elments of the file
         }
         else
         {
-            std::cout << "Oops!" << std::endl;
+            std::cout << "¡Oops!" << std::endl;
         }
     }
     virtual bool letItBe(short a, short b)
@@ -62,18 +52,20 @@ public:
         {
             return true;
         }
-        else //a==b?
+        else //a>=b?
         {
             return false;
         }
     }
-    short getSizeOfaVec(std::vector<short> aVec)
+
+private:
+    std::vector<short> vec;
+    std::vector<short>::iterator itP;
+    unsigned short sizeOfVec;
+    unsigned short pivotCandNum;
+    void setPivotCandNum(short pivotCandNum)
     {
-        return aVec.size();
-    }
-    void setPivotCandNum(short numOfCand)
-    {
-        pivotCandNum = numOfCand;
+        this->pivotCandNum = pivotCandNum;
     }
     short ranNumGen(void)
     {
@@ -93,7 +85,7 @@ public:
     short getPivotIndex(void)
     {
         std::vector<short> candidates;
-        for (short i = 0; i < pivotCandNum; ++i)
+        for (short index = 0; index < pivotCandNum; ++index)
         {
             short *random = new short;
             *random = ranNumGen();
@@ -102,21 +94,18 @@ public:
         }
         /*
         choose the random()-th element
+        random is 
         */
         return *(candidates.begin() + ranNumGen());
     }
-    std::vector<short> partition(std::vector<short> vec, bool isLeft)
+    void partition(std::vector<short> vec)
     {
-        //returnLeft: flag to choose vecL
         std::vector<short>::iterator iP = vec.begin() + getPivotIndex();
         std::vector<short> vecL(vec.begin(), iP - 1);
-        std::vector<short>::iterator iL = vecL.begin();
+        //std::vector<short>::iterator iL = vecL.begin();
         std::vector<short> vecR(iP + 1, vec.end() - 1);
-        std::vector<short>::iterator iR = vecR.begin();
+        //std::vector<short>::iterator iR = vecR.begin();
         std::vector<short> *leftBuffer = new std::vector<short>;
-        /*
-        vecL
-        */
         for (std::vector<short>::iterator iL = vecL.begin(); iL != vecL.end(); ++iL)
         {
             if (!letItBe(*iL, *iP))
@@ -125,9 +114,6 @@ public:
                 vecL.erase(iL);
             }
         }
-        /*
-        vecR
-        */
         for (std::vector<short>::iterator iR = vecL.begin(); iR != vecL.end(); ++iR)
         {
             if (!letItBe(*iP, *iR))
@@ -138,26 +124,16 @@ public:
             }
         }
         delete leftBuffer;
-        if (isLeft)
-        {
-            return vecL;
-        }
-        else
-        {
-            return vecR;
-        }
+        this->vec.empty();
+        this->vec = vecL;
+        this->vec.push_back(*iP);
+        this->vec.insert(this->vec.end(), vecR.begin(), vecR.end());
+        partition(vecL);
+        partition(vecR);
     }
     void sort(void)
     {
-        std::vector<short> vec = this->vec;
-        std::vector<short> *buffer = new std::vector<short>;
-        do
-        {
-            for (bool isLeft : {true, false})
-            {
-                *buffer = partition(vec, isLeft);
-            }
-        } while (/* condition */);
-        delete buffer;
+        partition(this->vec);
+        //iteration regulator needed
     }
 };
