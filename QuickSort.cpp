@@ -57,6 +57,12 @@ public:
             return false;
         }
     }
+    void sort(void)
+    {
+        partition(this->vec);
+
+        //iteration regulator needed
+    }
 
 private:
     std::vector<short> vec;
@@ -177,10 +183,5 @@ private:
         else //either or both vecL, vecR is/are empty
         {
         }
-    }
-    void sort(void)
-    {
-        partition(this->vec);
-        //iteration regulator needed
     }
 };
