@@ -20,10 +20,10 @@
     ¡¡¡¡¡¡ As the base class has the most generic form of the hierarchy, it has to available for any vector of any type!!!!!!
 */
 
-class QuickSortAlgorithm
+class QuickSort
 {
 public:
-    QuickSortAlgorithm(std::string fileName)
+    QuickSort(std::string fileName)
     {
         sizeOfVec = 0;
         pivotCandNum = 1; //the number of candidates one of them can be the pivot
@@ -63,10 +63,12 @@ private:
     std::vector<short>::iterator itP;
     unsigned short sizeOfVec;
     unsigned short pivotCandNum;
+
     void setPivotCandNum(short pivotCandNum)
     {
         this->pivotCandNum = pivotCandNum;
     }
+
     short ranNumGen(void)
     {
         std::srand(std::time(nullptr));
@@ -84,28 +86,36 @@ private:
     */
     short getPivotIndex(void)
     {
-        std::vector<short> candidates;
+        std::vector<short> candidatesIndices;
         for (short index = 0; index < pivotCandNum; ++index)
         {
             short *random = new short;
             *random = ranNumGen();
-            candidates.push_back(*random);
+            candidatesIndices.push_back(*random);
             delete random;
         }
         /*
         choose the random()-th element
         random is 
         */
-        return *(candidates.begin() + ranNumGen());
+        return *(candidatesIndices.begin() + ranNumGen());
     }
     void partition(std::vector<short> vec)
     {
+
+        /* code */
+
         std::vector<short>::iterator iP = vec.begin() + getPivotIndex();
         std::vector<short> vecL(vec.begin(), iP - 1);
-        //std::vector<short>::iterator iL = vecL.begin();
         std::vector<short> vecR(iP + 1, vec.end() - 1);
-        //std::vector<short>::iterator iR = vecR.begin();
-        std::vector<short> *leftBuffer = new std::vector<short>;
+        if (!vecL.empty() && !vecR.empty())
+        {
+
+            std::vector<short> *leftBuffer = new std::vector<short>;
+            //short leftMinSize;
+            //hort rightMinSize;
+            /*
+        //left-half partition option1   
         for (std::vector<short>::iterator iL = vecL.begin(); iL != vecL.end(); ++iL)
         {
             if (!letItBe(*iL, *iP))
@@ -114,7 +124,24 @@ private:
                 vecL.erase(iL);
             }
         }
-        for (std::vector<short>::iterator iR = vecL.begin(); iR != vecL.end(); ++iR)
+        */
+
+            //left-half partition option2
+            std::vector<short>::iterator iL = vecL.begin();
+            do
+            {
+                if (!letItBe(*iL, *iP))
+                {
+                    leftBuffer->push_back(*iL);
+                    vecL.erase(iL);
+                }
+                ++iL;
+            } while (iL != vecL.end());
+
+            /*
+        //right-half partition option1
+        
+        for (std::vector<short>::iterator iR = vecR.begin(); iR != vecR.end(); ++iR)
         {
             if (!letItBe(*iP, *iR))
             {
@@ -123,13 +150,33 @@ private:
                 vecR.insert(vecR.end(), leftBuffer->begin(), leftBuffer->end());
             }
         }
-        delete leftBuffer;
-        this->vec.empty();
-        this->vec = vecL;
-        this->vec.push_back(*iP);
-        this->vec.insert(this->vec.end(), vecR.begin(), vecR.end());
-        partition(vecL);
-        partition(vecR);
+        */
+
+            //right-half partition option2
+            std::vector<short>::iterator iR = vecR.begin();
+            do
+            {
+                if (!letItBe(*iP, *iR))
+                {
+                    vecL.push_back(*iR);
+                    vecR.erase(iR);
+                    vecR.insert(vecR.end(), leftBuffer->begin(), leftBuffer->end());
+                    leftBuffer->clear();
+                }
+                --iR;
+            } while (iR != vecR.end());
+
+            delete leftBuffer;
+            this->vec.clear();
+            this->vec = vecL;
+            this->vec.push_back(*iP);
+            this->vec.insert(this->vec.end(), vecR.begin(), vecR.end());
+            partition(vecL);
+            partition(vecR);
+        }
+        else //either or both vecL, vecR is/are empty
+        {
+        }
     }
     void sort(void)
     {
