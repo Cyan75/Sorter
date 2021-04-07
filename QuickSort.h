@@ -1,8 +1,14 @@
 #ifndef QUICKSORT_H
 #define QUICKSORT_H
-
-#include<vector>
-#include<string>
+#include <iostream>
+#include <fstream>
+#include <ostream>
+#include <string>
+#include <ctime>
+#include <vector>
+#include <random>
+#include <iterator>
+#include <algorithm>
 
 class QuickSort
 {
@@ -23,4 +29,4 @@ public:
     
 };
 
-#endif QUICKSORT_H
+#endif //QUICKSORT_H

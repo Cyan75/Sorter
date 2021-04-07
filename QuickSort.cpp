@@ -7,6 +7,7 @@
 #include <random>
 #include <iterator>
 #include <algorithm>
+#include "QuickSort.h"
 /*
     MODULISATION PLAN
     √• reader(constructor) : reads vector of shorts
@@ -20,118 +21,103 @@
     ¡¡¡¡¡¡ As the base class has the most generic form of the hierarchy, it has to available for any vector of any type!!!!!!
 */
 
-class QuickSort
+
+
+QuickSort::QuickSort(std::string fileName)
 {
-public:
-    QuickSort(std::string fileName)
+    pivotCandNum = 1; //the number of candidates one of them can be the pivot
+    itP = vec.begin() + getPivotIndex();
+    std::ifstream unsorted(fileName);
+    if (unsorted.is_open())
     {
-        sizeOfVec = 0;
-        pivotCandNum = 1; //the number of candidates one of them can be the pivot
-        itP = vec.begin() + getPivotIndex();
-        std::ifstream unsorted(fileName);
-        if (unsorted.is_open())
+        std::string line;
+        while (std::getline(unsorted, line))
         {
-            std::string line;
-            while (std::getline(unsorted, line))
-            {
-                vec.push_back(stoi(line));
-                sizeOfVec++;
-            }
-            unsorted.close();
-            //sizeOfVec is the number of elments of the file
+            vec.push_back(stoi(line));
         }
-        else
-        {
-            std::cout << "¡Oops!" << std::endl;
-        }
+        unsorted.close();
+        //sizeOfVec is the number of elments of the file
+        sort();
+        printVec(this->vec);
     }
-    virtual bool letItBe(short a, short b)
+    else
     {
-        /** this is the part that specifies a rule for sort using pivot **/
-        if (a < b)
-        {
-            return true;
-        }
-        else //a>=b?
-        {
-            return false;
-        }
+        std::cout << "¡Oops!" << std::endl;
     }
-    void sort(void)
+}
+virtual bool QuickSort::letItBe(short a, short b)
+{
+    /** this is the part that specifies a rule for sort using pivot **/
+    if (a < b)
     {
-        partition(this->vec);
-
-        //iteration regulator needed
+        return true;
     }
-
-private:
-    std::vector<short> vec;
-    std::vector<short>::iterator itP;
-    unsigned short sizeOfVec;
-    unsigned short pivotCandNum;
-
-    void setPivotCandNum(short pivotCandNum)
+    else //a>=b?
     {
-        this->pivotCandNum = pivotCandNum;
+        return false;
     }
+}
+void QuickSort::sort(void)
+{
+    partition(this->vec);
+}
+void QuickSort::setPivotCandNum(short pivotCandNum)
+{
+    this->pivotCandNum = pivotCandNum;
+}
 
-    short ranNumGen(void)
+short QuickSort::ranNumGen(void)
+{
+    std::srand(std::time(nullptr));
+    if (std::rand() < 0)
     {
-        std::srand(std::time(nullptr));
-        if (std::rand() < 0)
-        {
-            return ((-std::rand()) % pivotCandNum);
-        }
-        else
-        {
-            return ((std::rand()) % pivotCandNum);
-        }
+        return ((-std::rand()) % pivotCandNum);
+    }
+    else
+    {
+        return ((std::rand()) % pivotCandNum);
+    }
+}
+short QuickSort::getPivotIndex(void)
+{
+    std::vector<short> candidatesIndices;
+    setPivotCandNum(ranNumGen());
+    for (short index = 0; index < this->pivotCandNum; ++index)
+    {
+        short *random = new short;
+        *random = ranNumGen();
+        candidatesIndices.push_back(*random);
+        delete random;
     }
     /*
-    • pivot candidates are randomly selected
-    */
-    short getPivotIndex(void)
-    {
-        std::vector<short> candidatesIndices;
-        for (short index = 0; index < pivotCandNum; ++index)
-        {
-            short *random = new short;
-            *random = ranNumGen();
-            candidatesIndices.push_back(*random);
-            delete random;
-        }
-        /*
         choose the random()-th element
         random is 
         */
-        return *(candidatesIndices.begin() + ranNumGen());
-    }
-    void partition(std::vector<short> vec)
+    return *(candidatesIndices.begin() + ranNumGen());
+}
+void QuickSort::partition(std::vector<short> vec)
+{
+    if (!endPartitioning)
     {
-
-        /* code */
-
         std::vector<short>::iterator iP = vec.begin() + getPivotIndex();
         std::vector<short> vecL(vec.begin(), iP - 1);
         std::vector<short> vecR(iP + 1, vec.end() - 1);
-        if (!vecL.empty() && !vecR.empty())
+        std::vector<short> *leftBuffer = new std::vector<short>;
+        //short leftMinSize;
+        //short rightMinSize;
+        if (!vecL.empty())
         {
-
-            std::vector<short> *leftBuffer = new std::vector<short>;
-            //short leftMinSize;
-            //hort rightMinSize;
             /*
-        //left-half partition option1   
-        for (std::vector<short>::iterator iL = vecL.begin(); iL != vecL.end(); ++iL)
-        {
-            if (!letItBe(*iL, *iP))
+            //left-half partition option1   
+            for (std::vector<short>::iterator iL = vecL.begin(); iL != vecL.end(); ++iL)
             {
-                leftBuffer->push_back(*iL);
-                vecL.erase(iL);
+                if (!letItBe(*iL, *iP))
+                {
+                    leftBuffer->push_back(*iL);
+                    vecL.erase(iL);
+                }
             }
-        }
-        */
-
+            */
             //left-half partition option2
             std::vector<short>::iterator iL = vecL.begin();
             do
@@ -143,10 +129,18 @@ private:
                 }
                 ++iL;
             } while (iL != vecL.end());
-
+        }
+        else
+        {
+            if (vecL.empty())
+            {
+                endPartitioning = true;
+            }
+        }
+        if (!vecR.empty())
+        {
             /*
         //right-half partition option1
-        
         for (std::vector<short>::iterator iR = vecR.begin(); iR != vecR.end(); ++iR)
         {
             if (!letItBe(*iP, *iR))
@@ -157,7 +151,6 @@ private:
             }
         }
         */
-
             //right-half partition option2
             std::vector<short>::iterator iR = vecR.begin();
             do
@@ -171,17 +164,20 @@ private:
                 }
                 --iR;
             } while (iR != vecR.end());
-
-            delete leftBuffer;
-            this->vec.clear();
-            this->vec = vecL;
-            this->vec.push_back(*iP);
-            this->vec.insert(this->vec.end(), vecR.begin(), vecR.end());
-            partition(vecL);
-            partition(vecR);
         }
-        else //either or both vecL, vecR is/are empty
-        {
-        }
+        delete leftBuffer;
+        this->vec.clear();
+        this->vec = vecL;
+        this->vec.push_back(*iP);
+        this->vec.insert(this->vec.end(), vecR.begin(), vecR.end());
+        partition(vecL);
+        partition(vecR);
     }
-};
+}
+void QuickSort::printVec(std::vector<short> vec)
+{
+    for (auto it : vec)
+    {
+        std::cout << it << std::endl;
+    }
+}
