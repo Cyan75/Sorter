@@ -195,6 +195,7 @@ private:
 };
 int main(void)
 {
-    QuickSort *sortNumbers = new QuickSort("numbers.txt");
-    delete sortNumbers;
+    //QuickSort *sortNumbers = new QuickSort("numbers.txt");
+    //elete sortNumbers;
+    QuickSort sorter("numbers.txt");
 }

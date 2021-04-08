@@ -7,10 +7,12 @@
 #include <random>
 #include <iterator>
 #include <algorithm>
-
 #include "QuickSort.h"
 int main(void)
 {
-    QuickSort *sortNumbers = new QuickSort("numbers.txt");
-    delete sortNumbers;
+    //QuickSort *sortNumbers = new QuickSort("numbers.txt");
+    //delete sortNumbers;
+    std::srand(std::time(nullptr));
+    std::cout << std::rand();
+    return 0;
 }

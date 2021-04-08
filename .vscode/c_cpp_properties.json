@@ -4,11 +4,12 @@
             "name": "Mac",
             "includePath": [
                 "${workspaceFolder}/**"
+                //directory of header files
             ],
             "defines": [],
             "macFrameworkPath": [],
             "compilerPath": "/usr/bin/clang++",
-            "cStandard": "gnu17",
+            "cStandard": "c11",
             "cppStandard": "c++17",
             "intelliSenseMode": "macos-gcc-x64"
         }
