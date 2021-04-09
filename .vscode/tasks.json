@@ -6,6 +6,56 @@
 			"label": "C/C++: clang++ build active file",
 			"command": "/usr/bin/clang++",
 			"args": [
+				"--std = c++17",
+				"-stdlib=libc++",
+				"--debug",
+				"-g",
+				"${file}",
+				"-o",
+				"${fileDirname}/${fileBasenameNoExtension}"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": {
+				"owner": "cpp",
+				"fileLocation": [
+					"absolute"
+				],
+				"pattern": {
+					"regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+					"file": 1,
+					"line": 2,
+					"column": 3,
+					"severity": 4,
+					"message": 5
+				}
+			},
+			"group": "build"
+		},
+		{
+			"type": "shell",
+			"label": "clang build active file",
+			"command": "/usr/bin/clang",
+			"args": [
+				"-g",
+				"${file}",
+				"-o",
+				"${fileDirname}/${fileBasenameNoExtension}"
+			],
+			"options": {
+				"cwd": "/usr/bin"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build"
+		},
+		{
+			"type": "cppbuild",
+			"label": "C/C++: g++-10 build active file",
+			"command": "/usr/local/bin/g++-10",
+			"args": [
 				"-g",
 				"${file}",
 				"-o",
@@ -17,8 +67,11 @@
 			"problemMatcher": [
 				"$gcc"
 			],
-			"group": "build",
-			"detail": "compiler: /usr/bin/clang++"
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"detail": "compiler: /usr/local/bin/g++-10"
 		}
 	]
 }

@@ -15,7 +15,7 @@
     √• pivotCandidate Number setter :  sets the number of potential elements one of which will be a pivot.
     √• RNG : random number generator
     ∆• swapSwitch(virtual): determines wheater the two elements which are being investigated should be changed
-    x• pivot selector : picks some (one?,three?) elements randomly and set the most neutral value as the pivot
+    x• pivot selector : picks   e some (one?,three?) elements randomly and set the most neutral value as the pivot
     x• sorter(main?) : while the size of the all the remant vector is one.
 
     ¡¡¡¡¡¡ As the base class has the most generic form of the hierarchy, it has to available for any vector of any type!!!!!!
@@ -24,7 +24,7 @@
 class QuickSort
 {
 public:
-    QuickSort(std::string fileName)
+    QuickSort(std::string &fileName)
     {
         pivotCandNum = 1; //the number of candidates one of them can be the pivot
         itP = vec.begin() + getPivotIndex();
@@ -66,37 +66,30 @@ public:
 private:
     std::vector<short> vec;
     std::vector<short>::iterator itP;
-    bool endPartitioning = false;
     unsigned short pivotCandNum;
 
-    void setPivotCandNum(short pivotCandNum)
+    void setPivotCandNum(short &pivotCandNum)
     {
         this->pivotCandNum = pivotCandNum;
     }
 
-    short ranNumGen(void)
+    unsigned short randNumGen(void)
     {
         std::srand(std::time(nullptr));
-        if (std::rand() < 0)
-        {
-            return ((-std::rand()) % pivotCandNum);
-        }
-        else
-        {
-            return ((std::rand()) % pivotCandNum);
-        }
+        return std::rand();
     }
     /*
     • pivot candidates are randomly selected
     */
-    short getPivotIndex(void)
+    unsigned short getPivotIndex(void)
     {
         std::vector<short> candidatesIndices;
-        setPivotCandNum(ranNumGen());
+        short theNumOfCandidates = (randNumGen() % (this->pivotCandNum));
+        setPivotCandNum(theNumOfCandidates);
         for (short index = 0; index < this->pivotCandNum; ++index)
         {
             short *random = new short;
-            *random = ranNumGen();
+            *random = randNumGen();
             candidatesIndices.push_back(*random);
             delete random;
         }
@@ -104,10 +97,11 @@ private:
         choose the random()-th element
         random is 
         */
-        return *(candidatesIndices.begin() + ranNumGen());
+        return *(candidatesIndices.begin() + randNumGen());
     }
-    void partition(std::vector<short> vec)
+    void partition(std::vector<short> &vec)
     {
+        bool endPartitioning = false;
         if (!endPartitioning)
         {
             std::vector<short>::iterator iP = vec.begin() + getPivotIndex();
@@ -185,7 +179,7 @@ private:
             partition(vecR);
         }
     }
-    void printVec(std::vector<short> vec)
+    void printVec(std::vector<short> &vec)
     {
         for (auto it : vec)
         {
@@ -197,5 +191,6 @@ int main(void)
 {
     //QuickSort *sortNumbers = new QuickSort("numbers.txt");
     //elete sortNumbers;
-    QuickSort sorter("numbers.txt");
+    std::string file = "numbers.txt";
+    QuickSort sorter(file);
 }
