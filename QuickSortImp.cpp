@@ -68,7 +68,7 @@ private:
     std::vector<short>::iterator itP;
     unsigned short pivotCandNum;
 
-    void setPivotCandNum(short &pivotCandNum)
+    void setPivotCandNum(unsigned short &pivotCandNum)
     {
         this->pivotCandNum = pivotCandNum;
     }
@@ -83,21 +83,26 @@ private:
     */
     unsigned short getPivotIndex(void)
     {
-        std::vector<short> candidatesIndices;
-        short theNumOfCandidates = (randNumGen() % (this->pivotCandNum));
-        setPivotCandNum(theNumOfCandidates);
-        for (short index = 0; index < this->pivotCandNum; ++index)
+        if (this->pivotCandNum == 0)
         {
-            short *random = new short;
-            *random = randNumGen();
-            candidatesIndices.push_back(*random);
-            delete random;
+            return 0;
         }
-        /*
+        else
+        {
+            std::vector<short> candidatesIndices;
+            unsigned short theNumOfCandidates = (randNumGen() % (this->pivotCandNum));
+            setPivotCandNum(theNumOfCandidates);
+            for (short index = 0; index < this->pivotCandNum; ++index)
+            {
+                short random = randNumGen();
+                candidatesIndices.push_back(random);
+            }
+            /*
         choose the random()-th element
         random is 
         */
-        return *(candidatesIndices.begin() + randNumGen());
+            return *(candidatesIndices.begin() + randNumGen());
+        }
     }
     void partition(std::vector<short> &vec)
     {
@@ -107,7 +112,7 @@ private:
             std::vector<short>::iterator iP = vec.begin() + getPivotIndex();
             std::vector<short> vecL(vec.begin(), iP - 1);
             std::vector<short> vecR(iP + 1, vec.end() - 1);
-            std::vector<short> *leftBuffer = new std::vector<short>;
+            std::vector<short> leftBuffer;
             //short leftMinSize;
             //short rightMinSize;
             if (!vecL.empty())
@@ -129,7 +134,7 @@ private:
                 {
                     if (!letItBe(*iL, *iP))
                     {
-                        leftBuffer->push_back(*iL);
+                        leftBuffer.push_back(*iL);
                         vecL.erase(iL);
                     }
                     ++iL;
@@ -164,13 +169,12 @@ private:
                     {
                         vecL.push_back(*iR);
                         vecR.erase(iR);
-                        vecR.insert(vecR.end(), leftBuffer->begin(), leftBuffer->end());
-                        leftBuffer->clear();
+                        vecR.insert(vecR.end(), leftBuffer.begin(), leftBuffer.end());
+                        leftBuffer.clear();
                     }
                     --iR;
                 } while (iR != vecR.end());
             }
-            delete leftBuffer;
             this->vec.clear();
             this->vec = vecL;
             this->vec.push_back(*iP);
