@@ -1,33 +1,18 @@
-//#include "TwoDVector.h"
+#include "TwoDVector.hpp"
 #include <iostream>
-class TwoDVector
+TwoDVector::TwoDVector(short dftX, short dftY) : x(dftX), y(dftY) {};
+TwoDVector::TwoDVector operator+(TwoDVector const &vec1)
 {
-private:
-    short x, y;
-
-public:
-    TwoDVector(short dftX = 0, short dftY = 0)
-    {
-        x = dftX;
-        y = dftY;
-    }
-    TwoDVector operator + (TwoDVector const &vec1)
-    {
-        TwoDVector vec;
-        vec.x = x + vec1.x;
-        vec.y = y + vec1.y;
-        return vec;
-    }
-    void cout()
-    {
-        std::cout << "(" << x << ", " << y << ")" << std::endl;
-    }
-};
-int main(void)
+    TwoDVector vec(0,0);
+    vec.x = x + vec1.x;
+    vec.y = y + vec1.y;
+    return vec;
+}
+void TwoDVector::printThis()
 {
-    TwoDVector v1(2, 4);
-    TwoDVector v2(1, 1);
-    TwoDVector v3 = v1 + v2;
-    v3.cout();
-    return 0;
+    std::cout << "(" << this->x << ", " << this->y << ")" << std::endl;
+}
+void TwoDVector::cout()
+{
+    std::cout << "(" << x << ", " << y << ")" << std::endl;
 }
