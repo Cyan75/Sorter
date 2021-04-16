@@ -1,12 +1,16 @@
 #ifndef TWODVECTOR_H
 #define TWODVECTOR_H
-class TwoDVector
+
+namespace MyNamespace
 {
-public:
-    short x, y;
-    TwoDVector(short dftX, short dftY);
-    TwoDVector operator+(TwoDVector const &vec1);
-    void printThis();
-    void cout();
-};
+    class TwoDVector
+    {
+    public:
+        short x;
+        short y;
+        TwoDVector();
+        void printThis();
+    };
+}
+
 #endif //TWODVECTOR_H
