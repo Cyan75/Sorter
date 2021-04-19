@@ -1,12 +1,13 @@
 #include "TwoDVector.hpp"
 #include <iostream>
-using namespace MyNamespace;
+//using namespace MyNamespace;
 
-TwoDVector::TwoDVector() : x(0), y(0)
+MyNamespace::TwoDVector::TwoDVector() : x(0), y(0)
 {
     std::cin >> x;
+    std::cin >> y;
 }
-void TwoDVector::printThis()
+void MyNamespace::TwoDVector::printThis()
 {
     std::cout << "(" << x << ", " << y << ")" << std::endl;
 }
