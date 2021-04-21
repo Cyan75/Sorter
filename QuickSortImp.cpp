@@ -7,7 +7,7 @@
 #include <random>
 #include <iterator>
 #include <algorithm>
-//#include "QuickSort.h"
+
 /*
     MODULISATION PLAN
     √• reader(constructor) : reads vector of shorts

@@ -1,5 +1,4 @@
 #include "TwoDVector.hpp"
-//#include <iostream>
 //using namespace MyNamespace;
 int main(void)
 {
