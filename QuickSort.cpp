@@ -22,20 +22,21 @@ public:
         /*
         TODO:
         */
-        partition(dataArray);
         print();
     }
-
-    void partition(std::vector<short> &vec)
+    /* 
+    passing information about the previous index and returns 
+    */
+    short partition(short &previousPivotIndex)
     {
-        if (vec.size() > 1)
-        {
-            /*
+        /*
             TODO : set pivot index
             */
-            short pivotIndex = 2;
-            std::vector<short> leftV(vec.begin(), vec.begin() + pivotIndex - 1);
-            std::vector<short> rightV(vec.begin() + pivotIndex + 1, vec.end());
+        short pivotIndex = 2;
+        std::vector<short> leftV(vec.begin(), vec.begin() + pivotIndex - 1);
+        std::vector<short> rightV(vec.begin() + pivotIndex + 1, vec.end());
+        if (!leftV.empty())
+        {
             for (auto iL : leftV)
             {
                 if (iL > vec[pivotIndex])
@@ -44,6 +45,10 @@ public:
                     leftV.erase(leftV.begin() + iL);
                 }
             }
+        }
+        if (!rightV.empty())
+        {
+
             for (auto iR : rightV)
             {
                 if (iR < vec[pivotIndex])
@@ -52,11 +57,6 @@ public:
                     rightV.erase(rightV.begin() + iR);
                 }
             }
-            partition(leftV);
-            partition(rightV);
-        }
-        else
-        {
         }
     }
 };
