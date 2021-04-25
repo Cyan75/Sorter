@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <iterator>
 #include <string>
 #include <time.h>
 #include <utility>
@@ -24,45 +25,87 @@ public:
         TODO:
         */
 
-        partition(std::make_pair(0, dataArray.size()));
+        partition();
         print();
     }
-    void partition(std::pair<short, short> partRange) //lower bound, upper bound
+    void partition() //lower bound, upper bound
     {
-        short lowerBound = std::get<0>(partRange);
-        short upperBound = std::get<1>(partRange);
-        short pivotIndex = 2; //get pivot index(between lower bound and upper bound)
-        short pivotValue = dataArray[pivotIndex];
-        std::vector<short> leftV(dataArray.begin() + lowerBound, dataArray.begin() + pivotIndex - 1);
-        std::vector<short> rightV(dataArray.begin() + pivotIndex + 1, dataArray.begin() + upperBound);
-        dataArray.clear();
+        //vector
+        short lowerBound = 0;
+        short upperBound = this->dataArray.size();
+        short pivotIndexValue = 3; //get pivot index(between lower bound and upper bound)
+
+        std::vector<short>::iterator pivot = dataArray.begin();
+        advance(pivot, pivotIndexValue - 1);
+
+        std::cout << "begin : " << *dataArray.begin() << std::endl;
+        //std::cout << "end : " << *dataArray.end() << std::endl;
+        std::cout << "pivot : " << *pivot << std::endl;
+        std::cout << "dataArray size: " << dataArray.size() << std::endl;
+
+        std::vector<short> leftV(dataArray.begin(), pivot);
+        std::cout << "leftV before part " << std::endl;
+        for (auto i : leftV)
+        {
+            std::cout << i << ", ";
+        }
+        std::cout << std::endl;
+
+        std::vector<short> rightV(pivot + 1, dataArray.end());
+        std::cout << "rightV before part " << std::endl;
+        for (auto i : rightV)
+        {
+            std::cout << i << ", ";
+        }
+        std::cout << std::endl;
+
+        //partition---------------------------------------------------
+        //this->dataArray.clear();
         if (!leftV.empty())
         {
             for (auto iL : leftV)
             {
-                if (iL > pivotValue)
+                if (iL > *pivot)
                 {
                     rightV.push_back(iL);
                     leftV.erase(leftV.begin() + iL);
                 }
             }
+            std::cout << "leftV after part " << std::endl;
+            for (auto i : leftV)
+            {
+                std::cout << i << ", ";
+            }
+        }
+        else
+        {
+            std::cout << "leftV is empty " << std::endl;
         }
 
         if (!leftV.empty())
         {
             for (auto iR : rightV)
             {
-                if (iR < pivotValue)
+                if (iR < *pivot)
                 {
                     leftV.push_back(iR);
                     rightV.erase(rightV.begin() + iR);
                 }
             }
+            std::cout << "rightV after part " << std::endl;
+            for (auto i : rightV)
+            {
+                std::cout << i << ", ";
+            }
         }
-        dataArray = leftV;
-        dataArray.push_back(pivotValue);
-        dataArray.insert(dataArray.end(), rightV.begin(), rightV.end());
-
+        else
+        {
+            std::cout << "rightV is empty " << std::endl;
+        }
+        /* this->dataArray = leftV;
+        this->dataArray.push_back(pivotValue);
+        this->dataArray.insert(dataArray.end(), rightV.begin(), rightV.end());
+ */
         //partition(std::make_pair(lowerBound + 1, pivotIndex - 1));
         //partition(std::make_pair(pivotIndex + 1, upperBound - 1));
     }
