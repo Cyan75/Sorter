@@ -20,7 +20,7 @@ private:
 public:
     QuickSort()
     {
-        dataArray = {5, 4, 3, 2, 1};
+        dataArray = {9, 8, 7, 6, 5, 4, 3, 2, 1};
         /*
         TODO:
         */
@@ -33,18 +33,18 @@ public:
         //vector
         short lowerBound = 0;
         short upperBound = this->dataArray.size();
-        short pivotIndexValue = 3; //get pivot index(between lower bound and upper bound)
+        short pivotIndexValue = 5; //get pivot index(between lower bound and upper bound)
 
         std::vector<short>::iterator pivot = dataArray.begin();
         advance(pivot, pivotIndexValue - 1);
 
         std::cout << "begin : " << *dataArray.begin() << std::endl;
-        //std::cout << "end : " << *dataArray.end() << std::endl;
+        //std::cout << "end : " << *dataArray.end() << std::endl;//0
         std::cout << "pivot : " << *pivot << std::endl;
         std::cout << "dataArray size: " << dataArray.size() << std::endl;
 
         std::vector<short> leftV(dataArray.begin(), pivot);
-        std::cout << "leftV before part " << std::endl;
+        std::cout << "leftV before part : ";
         for (auto i : leftV)
         {
             std::cout << i << ", ";
@@ -52,7 +52,7 @@ public:
         std::cout << std::endl;
 
         std::vector<short> rightV(pivot + 1, dataArray.end());
-        std::cout << "rightV before part " << std::endl;
+        std::cout << "rightV before part : ";
         for (auto i : rightV)
         {
             std::cout << i << ", ";
@@ -63,45 +63,59 @@ public:
         //this->dataArray.clear();
         if (!leftV.empty())
         {
-            for (auto iL : leftV)
+            std::vector<short>::iterator iL = leftV.begin();
+            for (short i = 0; i < leftV.size(); ++i)
             {
-                if (iL > *pivot)
+                std::cout << "*iL = " << *iL << std::endl;
+                if (*iL > *pivot)
                 {
-                    rightV.push_back(iL);
-                    leftV.erase(leftV.begin() + iL);
+                    rightV.push_back(*iL);
+                    leftV.erase(iL);
                 }
-            }
-            std::cout << "leftV after part " << std::endl;
-            for (auto i : leftV)
-            {
-                std::cout << i << ", ";
+                else
+                {
+                    ++iL;
+                }
             }
         }
         else
         {
-            std::cout << "leftV is empty " << std::endl;
+            std::cout << "leftV is empty : " << std::endl;
         }
-
-        if (!leftV.empty())
+        if (!rightV.empty())
         {
-            for (auto iR : rightV)
+            std::vector<short>::iterator iR = rightV.begin();
+            for (short i = 0; i < rightV.size(); ++i)
             {
-                if (iR < *pivot)
+                std::cout << "*iR = " << *iR << std::endl;
+                if (*iR < *pivot)
                 {
-                    leftV.push_back(iR);
-                    rightV.erase(rightV.begin() + iR);
+                    leftV.push_back(*iR);
+                    rightV.erase(iR);
                 }
-            }
-            std::cout << "rightV after part " << std::endl;
-            for (auto i : rightV)
-            {
-                std::cout << i << ", ";
+                else
+                {
+                    ++iR;
+                }
             }
         }
         else
         {
             std::cout << "rightV is empty " << std::endl;
         }
+        std::cout << "leftV after part : ";
+        for (auto i : leftV)
+        {
+            std::cout << i << ", ";
+        }
+        std::cout << std::endl;
+        std::cout << "rightV after part : ";
+        for (auto i : rightV)
+        {
+            std::cout << i << ", ";
+        }
+        std::cout << std::endl;
+
         /* this->dataArray = leftV;
         this->dataArray.push_back(pivotValue);
         this->dataArray.insert(dataArray.end(), rightV.begin(), rightV.end());
