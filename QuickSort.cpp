@@ -64,7 +64,7 @@ public:
         if (!leftV.empty())
         {
             std::vector<short>::iterator iL = leftV.begin();
-            for (short i = 0; i < leftV.size(); ++i)
+            for (auto i : leftV)
             {
                 std::cout << "*iL = " << *iL << std::endl;
                 if (*iL > *pivot)
@@ -85,7 +85,7 @@ public:
         if (!rightV.empty())
         {
             std::vector<short>::iterator iR = rightV.begin();
-            for (short i = 0; i < rightV.size(); ++i)
+            for (auto i : rightV)
             {
                 std::cout << "*iR = " << *iR << std::endl;
                 if (*iR < *pivot)
