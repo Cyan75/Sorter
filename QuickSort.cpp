@@ -17,7 +17,7 @@ private:
             std::cout << i << ", ";
         }
     }
-    std::vector<short> reconstruct(std::vector<short> &leftV, std::vector<short> &rightV, short pivot)
+    std::vector<short> reassociate(std::vector<short> &leftV, short pivot, std::vector<short> &rightV)
     {
         //this->dataArray.clear();
         std::vector<short> vec;
@@ -95,7 +95,8 @@ public:
         {
             std::cout << "rightV is empty" << std::endl;
         }
-        reconstruct(leftV, rightV, *pivot);
+        vec = reassociate(leftV, *pivot, rightV);
+
         partition(leftV);
         partition(rightV);
     }
