@@ -17,7 +17,10 @@ private:
             std::cout << i << ", ";
         }
     }
-    std::vector<short> reassociate(std::vector<short> &leftV, short pivot, std::vector<short> &rightV)
+    /*
+    make and return the vector consists of levf + pivot + right
+    */
+    std::vector<short> reAssociate(std::vector<short> &leftV, short pivot, std::vector<short> &rightV)
     {
         //this->dataArray.clear();
         std::vector<short> vec;
@@ -25,6 +28,14 @@ private:
         vec.push_back(pivot);
         vec.insert(vec.end(), rightV.begin(), rightV.end());
         return vec;
+    }
+    std::vector<short> makeUnitVector(short l, short p, short r)
+    {
+        std::vector<short> uVec;
+        uVec.push_back(l);
+        uVec.push_back(p);
+        uVec.push_back(r);
+        return uVec;
     }
 
 public:
@@ -38,6 +49,7 @@ public:
         partition(dataArray);
         print(dataArray);
     }
+
     void partition(std::vector<short> &vec)
     {
         short lowerBound = 0;
@@ -95,10 +107,31 @@ public:
         {
             std::cout << "rightV is empty" << std::endl;
         }
-        vec = reassociate(leftV, *pivot, rightV);
 
-        partition(leftV);
-        partition(rightV);
+        //iteration regulation
+        short l;
+        short r;
+        if (leftV.size() > 1 && rightV.size() > 1)
+        {
+            partition(leftV);
+            partition(rightV);
+        }
+        else if (leftV.size() > 1 && !rightV.size() > 1)
+        {
+            partition(leftV);
+            r = *rightV.begin();
+        }
+        else if (!leftV.size() > 1 && rightV.size() > 1)
+        {
+            l = *leftV.begin();
+            partition(rightV);
+        }
+        else
+        {
+            makeUnitVector(l, *pivot, r);
+        }
+        vec.clear();
+        vec = reAssociate(leftV, *pivot, rightV);
     }
 };
 int main(void)
