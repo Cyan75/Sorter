@@ -19,23 +19,16 @@ private:
     }
     /*
     make and return the vector consists of levf + pivot + right
+
+    Consider: if this is proper when the size of any argument vector is 1?
     */
     std::vector<short> reAssociate(std::vector<short> &leftV, short pivot, std::vector<short> &rightV)
     {
-        //this->dataArray.clear();
         std::vector<short> vec;
         vec.insert(vec.end(), leftV.begin(), leftV.end());
         vec.push_back(pivot);
         vec.insert(vec.end(), rightV.begin(), rightV.end());
         return vec;
-    }
-    std::vector<short> makeUnitVector(short l, short p, short r)
-    {
-        std::vector<short> uVec;
-        uVec.push_back(l);
-        uVec.push_back(p);
-        uVec.push_back(r);
-        return uVec;
     }
 
 public:
@@ -52,9 +45,7 @@ public:
 
     void partition(std::vector<short> &vec)
     {
-        short lowerBound = 0;
-        short upperBound = vec.size();
-        short pivotIndexValue = upperBound / 2; //get pivot index(between lower bound and upper bound)
+        short pivotIndexValue = vec.size() / 2; //get INDEX of the pivot (between lower bound and upper bound)
 
         std::vector<short>::iterator pivot = vec.begin();
         advance(pivot, pivotIndexValue - 1);
@@ -72,6 +63,7 @@ public:
             std::vector<short>::iterator iL = leftV.begin();
             for (auto i : leftV)
             {
+                std::cout << *iL << " " << std::endl;
                 if (*iL > *pivot)
                 {
                     rightV.push_back(*iL);
@@ -107,32 +99,44 @@ public:
         {
             std::cout << "rightV is empty" << std::endl;
         }
-
-        //iteration regulation
-        short l;
-        short r;
+        std::cout << "leftV : ";
+        print(leftV);
+        std::cout << std::endl;
+        std::cout << "rightV : ";
+        print(rightV);
+        std::cout << std::endl;
+        reAssociate(leftV, *pivot, rightV);
+        partition(leftV);
+        partition(rightV);
+    }
+    /*
+    void postPartition(void)
+    {
+        vec.clear();
+        //different definition(implementation) of reAssociation need for subvector size
+        vec = reAssociate(leftV, *pivot, rightV);
+        //both leftV and rightV are not scalar
         if (leftV.size() > 1 && rightV.size() > 1)
         {
             partition(leftV);
             partition(rightV);
         }
+        
+        //leftV is a vector, rightV is a scalar
+        
         else if (leftV.size() > 1 && !rightV.size() > 1)
         {
             partition(leftV);
-            r = *rightV.begin();
         }
+        
+        //leftV is a scalar, rightV is a vector
+        
         else if (!leftV.size() > 1 && rightV.size() > 1)
         {
-            l = *leftV.begin();
             partition(rightV);
         }
-        else
-        {
-            makeUnitVector(l, *pivot, r);
-        }
-        vec.clear();
-        vec = reAssociate(leftV, *pivot, rightV);
     }
+    */
 };
 int main(void)
 {
