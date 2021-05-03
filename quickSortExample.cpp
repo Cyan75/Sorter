@@ -23,6 +23,7 @@ void quickSort(vector<T> &vec, const int &left, const int &right)
     {
         return;
     }
+    //rignt > left
     uniform_int_distribution<int> randInt(left, right);
     int leftArrow = left + 1;
     int rightArrow = right;
@@ -55,5 +56,3 @@ void quickSort(vector<T> &vec, const int &left, const int &right)
     quickSort(vec, left, current - 1);
     quickSort(vec, current + 1, right);
 }
- 
- 
