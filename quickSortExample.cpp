@@ -56,3 +56,13 @@ void quickSort(vector<T> &vec, const int &left, const int &right)
     quickSort(vec, left, current - 1);
     quickSort(vec, current + 1, right);
 }
+int main(void)
+{
+    std::vector<short> dataArray = {9, 8, 7, 6, 5, 4, 3, 2, 1};
+    quickSort(dataArray, 0, dataArray.size());
+    for (auto i : dataArray)
+    {
+        std::cout << i << ", ";
+    }
+    return 1;
+}
