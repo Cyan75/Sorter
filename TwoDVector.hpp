@@ -1,5 +1,10 @@
 #ifndef TWODVECTOR_H
 #define TWODVECTOR_H
+#include <iostream>
+#include <vector>
+#include <iterator>
+#include <string>
+#include <random>
 
 namespace MyNamespace
 {
