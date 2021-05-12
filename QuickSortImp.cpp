@@ -32,9 +32,9 @@ private:
     }
 
 public:
-    QuickSort()
+    QuickSort(std::vector<T> &dataArray)
     {
-        dataArray = {9, 8, 7, 6, 5, 4, 3, 2, 1};
+        //dataArray = {9, 8, 7, 6, 5, 4, 3, 2, 1};
         sort(dataArray, 0, dataArray.size() - 1);
         print(dataArray);
     }
@@ -81,6 +81,7 @@ public:
 };
 int main(void)
 {
-    QuickSort<short> q;
+    std::vector<short> dataArray = {11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
+    QuickSort<short> q(dataArray);
     return 1;
 }
